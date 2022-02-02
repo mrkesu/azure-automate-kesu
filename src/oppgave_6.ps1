@@ -85,9 +85,10 @@ class Player {
     [object]$hand = [Deck]::new($hand)  # spiller sine kort, en "tom kortstokk"
     [object]$deck                       # referanse til kortstokken som brukes
 
-    Player($name, $deck) {
+    Player($name, [Deck]$deck) {
         $this.name = $name
         $this.deck = $deck
+        $this.deck.GetCard(2, $this.hand) # Nye spillere starter med 2 kort
     }
 
     # Spiller trekker et kort
@@ -114,10 +115,6 @@ Write-Host "Poengsum: $($kortstokk.GetPoints())"
 # Skape to spillere med referanse til kortstokken
 $meg = [Player]::new("meg", $kortstokk)
 $magnus = [Player]::new("magnus", $kortstokk)
-
-# Trekke startkort
-$meg.DrawCard(2)
-$magnus.DrawCard(2)
 
 Write-Host $meg
 Write-Host $magnus
