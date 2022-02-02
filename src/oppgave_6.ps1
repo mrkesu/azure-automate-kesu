@@ -105,15 +105,15 @@ class Player {
 }
 
 # Skape ny kortstokk
-$deck = [Deck]::new($UrlKortstokk)
+$kortstokk = [Deck]::new($UrlKortstokk)
 
 # ToString() automagi ╰(*°▽°*)╯
-Write-Host "Kortstokk: $deck"
-Write-Host "Poengsum: $($deck.GetPoints())"
+Write-Host "Kortstokk: $kortstokk"
+Write-Host "Poengsum: $($kortstokk.GetPoints())"
 
 # Skape to spillere med referanse til kortstokken
-$meg = [Player]::new("meg", $deck)
-$magnus = [Player]::new("magnus", $deck)
+$meg = [Player]::new("meg", $kortstokk)
+$magnus = [Player]::new("magnus", $kortstokk)
 
 # Trekke startkort
 $meg.DrawCard(2)
@@ -122,4 +122,4 @@ $magnus.DrawCard(2)
 Write-Host $meg
 Write-Host $magnus
 
-Write-Host "Kortstokk: $deck"
+Write-Host "Kortstokk: $kortstokk"
