@@ -84,6 +84,7 @@ class Player {
     [string]$name                       # spillernavn
     [object]$hand = [Deck]::new($hand)  # spiller sine kort, en "tom kortstokk"
     [object]$deck                       # referanse til kortstokken som brukes
+    [bool]$active = $true
 
     Player($name, [Deck]$deck) {
         $this.name = $name
@@ -119,6 +120,11 @@ class Blackjack {
     
     [Player[]]Winner() {
         $winner = @()
+        # If there's only 1 active player, then he's the winner by default.
+        if( ($this.players | Where-Object {$_.active}).Length -eq 1 ) {
+            return $this.players | Where-Object {$_.active}
+        }
+
         foreach ($player in $this.players) {
             if ($player.hand.GetPoints() -eq $this.pointsGoal) {
                 $winner += $player
@@ -138,18 +144,33 @@ Write-Host "Poengsum: $($kortstokk.GetPoints())"
 Write-Host ""
 
 # Skape to nye spillere i blackjack med referanse til kortstokken
-$meg = $game.newPlayer("meg")
-$magnus = $game.newPlayer("magnus")
+$game.newPlayer("meg") | Out-Null
+$game.newPlayer("magnus") | Out-Null
 #$player3 = $game.newPlayer("spiller3")
 
 # En vinner funnet
 if($game.Winner().Length -eq 1) {
     Write-Host "Vinner: $($game.Winner().name)"
 }
-
 # Flere vinnere funnet
-if($game.Winner().Length -gt 1) {
+elseif($game.Winner().Length -gt 1) {
     Write-Host "Vinner: Draw"
+}
+# Ingen vinner funnet: sudden death :)
+elseif($game.Winner().Length -eq 0) {
+    foreach($player in $game.players) {
+        # Hvis alle de andre spillerne er inaktiv (bust) så er dette siste mann og
+        # vinner automatisk. ingen vits å trekke flere kort.
+        if( ($game.players | Where-Object {$player -ne $_ -AND $_.active}).Length -eq 0 ) {
+            break
+        }
+
+        while($player.hand.GetPoints() -lt 17) {
+            $player.DrawCard()
+            if($player.hand.GetPoints() -gt 21) { $player.active = $false } # Player is bust, set as inactive
+        }
+    }
+    Write-Host "Vinner: $($game.Winner().name)"
 }
 
 # Spillerinfo, i alfabetisk rekkefølge etter navn
