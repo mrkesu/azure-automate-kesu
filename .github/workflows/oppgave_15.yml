@@ -13,7 +13,5 @@ jobs:
         uses: actions/checkout@v3
         with:
           repository: ${{ github.repository }}
-
-
       - name: Run Blackjack script file
         run: "src/oppgave_10.ps1"
