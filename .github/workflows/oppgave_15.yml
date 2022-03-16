@@ -1,0 +1,19 @@
+name: oppgave_15
+on: [push, workflow_dispatch]
+
+jobs:
+  job1:
+    defaults:
+      run:
+        shell: pwsh
+        working-directory: ${{ github.workspace }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ github.repository }}
+
+
+      - name: Run Blackjack script file
+        run: "src/oppgave_10.ps1"
