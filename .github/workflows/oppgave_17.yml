@@ -15,7 +15,7 @@ jobs:
           repository: ${{ github.repository }}
       - name: Run Blackjack script file
         run: "src/oppgave_10.ps1"
-      - name: login (men hvorfor?)
+      - name: login
         uses: azure/login@v1
         with:
           creds: ${{ secrets.OPPGAVE14 }}
