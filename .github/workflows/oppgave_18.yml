@@ -1,0 +1,44 @@
+name: oppgave_18
+on: 
+  #push:
+  #  paths:
+  #    - '.github/workflows/oppgave_18.yml'
+  #    - 'funcApp/**'
+  workflow_dispatch:
+
+jobs:
+  job1:
+    defaults:
+      run:
+        shell: pwsh
+        working-directory: ${{ github.workspace }}
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Checkout repository
+      uses: actions/checkout@v3
+      with:
+        repository: ${{ github.repository }}
+
+    - name: login
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.OPPGAVE14 }}
+        enable-AzPSSession: true 
+
+    - name: Run Azure PowerShell script
+      uses: azure/powershell@v1
+      with:
+        inlineScript: funcApp/cleanup.ps1 -resourceGroupName "Kenneth-workshop-isnbqb5navfm6"
+        azPSVersion: "latest"
+
+    - name: 'logout from azure'
+      # vet ikke om jeg helt skjønner vitsen med dette, logges ikke sesjon ut automatisk etter siste, eller blir det hengende?
+      uses: azure/powershell@v1
+      with:
+        inlineScript: |
+          Disconnect-AzAccount -Scope CurrentUser
+          az logout
+          az cache purge
+          az account clear
+        azPSVersion: "latest"
