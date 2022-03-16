@@ -101,8 +101,8 @@ class Player {
 
 class Blackjack {
     [System.Collections.ArrayList]$players = @()
-    [Deck]$deck = [Deck]::new($UrlKortstokk)
-    [int]$pointsGoal = 21
+    [Deck                        ]$deck = [Deck]::new($UrlKortstokk)
+    [int                         ]$pointsGoal = 21
 
     # Add new player
     [Player]newPlayer([string]$name) {
