@@ -1,5 +1,10 @@
 name: oppgave_17
-on: [push, workflow_dispatch]
+on: 
+  push:
+    paths:
+      - '.github\workflows\oppgave_17.yml'
+      - 'funcApp/**'
+  workflow_dispatch:
 
 jobs:
   job1:
