@@ -19,3 +19,4 @@ jobs:
           repository: ${{ github.repository }}
       - name: Run Blackjack script file
         run: "src/oppgave_10.ps1"
+        # trigger-test
